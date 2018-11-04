@@ -35,6 +35,7 @@ Comms::Comms(int argc, char** argv):spinner(NULL),emergency(false),slow(false),a
   ros::init(argc,argv,"comms");
   
   ros::NodeHandle nh;
+  ros::NodeHandle pnh("~");
   
   // Subscribers:
   status_sub = nh.subscribe<const siar_driver::SiarStatus::ConstPtr&>("siar_status", 2, &Comms::siarStatusCallback, this);
@@ -44,6 +45,19 @@ Comms::Comms(int argc, char** argv):spinner(NULL),emergency(false),slow(false),a
   // Publisher
   emergency_pub = nh.advertise<std_msgs::Bool>("/emergency_stop",2);
   elec_x_pub = nh.advertise<std_msgs::Float32>("/width_pos",2);
+  
+  
+  // Get parameters
+  if (pnh.hasParam("n_inspection_cams")) {
+    pnh.getParam("n_inspection_cams", n_inspection_cams);
+  } else {
+    n_inspection_cams = 1; // One or two
+  }
+  if (pnh.hasParam("thermal_cam")) {
+    pnh.getParam("thermal_cam", thermal_cam);
+  } else {
+    thermal_cam = false; // One or two
+  }
   
 }
  

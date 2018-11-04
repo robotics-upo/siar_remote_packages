@@ -70,6 +70,10 @@ public:
   int automatic; // Are we in automatic mode?
   bool arm_mode;
   uint8_t arm_torque;
+  
+  // Parameters
+  int n_inspection_cams;
+  bool thermal_cam;
 
 protected:
   ros::Subscriber status_sub, rssi_sub, text_sub;

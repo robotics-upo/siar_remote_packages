@@ -77,9 +77,9 @@ QMainWindow(parent, flags), argc(argc), argv(argv), init_log_time(), node(NULL),
 //   window_1->resize(640, 480);
   window_1->setWindowTitle("PointClouds");
   
-  window_2 = configureImageDisplay("/inspection1_cam/image_raw", "Inpection1");
-  window_img_2 = configureImageDisplay("/inspection2_cam/image_raw", "Inpection2");
-  window_img_3 = configureImageDisplay("/flip_image", "Thermal");
+  window_2 = configureImageDisplay("/inspection1_cam/image_raw", "Inpection1"); // Window_2 inspec 1
+  window_img_2 = configureImageDisplay("/inspection2_cam/image_raw", "Inpection2"); // Window_img_2 inspec 2
+  window_img_3 = configureImageDisplay("/flip_image", "Thermal"); // Window 
   window_fl = configureImageDisplay("/front_left_web/rgb/image_raw", "Front Left");
   window_fr = configureImageDisplay("/front_right_web/rgb/image_raw", "Front Right");
   
@@ -238,13 +238,56 @@ void BaseStation::setInspectionView() {
   
   window_1->showNormal();
   window_2->showNormal();
-  window_3->showMinimized();
   window_4->showMinimized();
   window_cam->showNormal();
-  window_img_2->showNormal();
-  window_img_3->showNormal();
-  window_fl->showMinimized();
-  window_fr->showMinimized();
+  if (node->n_inspection_cams > 1) {
+    window_img_2->showNormal();
+    window_img_2->setMinimumWidth(size_.width()*0.2);
+    window_img_2->resize(size_.width()*0.4, size_.height()*0.5);
+    window_img_2->setMaximumWidth(size_.width()*2.1);
+    window_img_2->setMaximumHeight(size_.height()*2.2);
+    window_img_2->setMinimumHeight(size_.height()*0.2);
+    window_img_2->move(0,size_.height()*0.5);
+    window_fl->showMinimized();
+    window_fr->showMinimized();
+  } else {
+    window_img_2->showMinimized();
+    window_fl->showNormal();
+    window_fr->showNormal();
+    window_fl->setMinimumWidth(size_.width()*0.2);
+    window_fl->setMaximumWidth(size_.width()*3);
+    window_fl->setMaximumHeight(size_.height()*1.2);
+    window_fl->setMinimumHeight(size_.height()*0.1);
+    window_fl->resize(size_.width()*0.2, size_.height()*0.4);
+  
+    window_fr->setMinimumWidth(size_.width()*0.2);
+    window_fr->setMaximumWidth(size_.width()*3);
+    window_fr->setMaximumHeight(size_.height()*1.2);
+    window_fr->setMinimumHeight(size_.height()*0.1);
+    window_fr->resize(size_.width()*0.2, size_.height()*0.4);
+    window_fl->move(size_.width()*0.4,size_.height()*0.54);
+    window_fr->move(size_.width()*0.6,size_.height()*0.54);
+  }
+  
+  if (node->thermal_cam) {
+    window_3->showMinimized();
+    window_img_3->showNormal();
+    window_img_3->setMinimumWidth(size_.width()*0.1);
+    window_img_3->setMaximumWidth(size_.width()*2);
+    window_img_3->setMaximumHeight(size_.height()*2.2);
+    window_img_3->setMinimumHeight(size_.height()*0.01);
+    window_img_3->resize(size_.width()*0.2, size_.height()*0.5);
+    window_img_3->move(size_.width()*0.4, size_.height()*0.5);
+  } else {
+    window_img_3->showMinimized();
+    window_3->showNormal();
+    window_3->setMinimumWidth(size_.width()*0.1);
+    window_3->setMaximumWidth(size_.width()*2);
+    window_3->setMaximumHeight(size_.height()*2.2);
+    window_3->setMinimumHeight(size_.height()*0.01);
+    window_3->resize(size_.width()*0.2, size_.height()*0.5);
+    window_3->move(0, size_.height()*0.5);
+  }
   
   window_2->setMinimumWidth(size_.width()*0.2);
   window_2->resize(size_.width()*0.4, size_.height()*0.5);
@@ -252,22 +295,13 @@ void BaseStation::setInspectionView() {
   window_2->setMaximumHeight(size_.height()*2.2);
   window_2->setMinimumHeight(size_.height()*0.2);
   
-  window_img_2->setMinimumWidth(size_.width()*0.2);
-  window_img_2->resize(size_.width()*0.4, size_.height()*0.5);
-  window_img_2->setMaximumWidth(size_.width()*2.1);
-  window_img_2->setMaximumHeight(size_.height()*2.2);
-  window_img_2->setMinimumHeight(size_.height()*0.2);
   
   window_cam->setMinimumWidth(size_.width()*0.1);
   window_cam->setMaximumWidth(size_.width()*2.0);
   window_cam->resize(size_.width()*0.4, size_.height()*0.5);
   window_cam->setMaximumHeight(size_.height()*2.2);
   window_cam->setMinimumHeight(size_.height()*0.1);
-  window_img_3->setMinimumWidth(size_.width()*0.1);
-  window_img_3->setMaximumWidth(size_.width()*2);
-  window_img_3->setMaximumHeight(size_.height()*2.2);
-  window_img_3->setMinimumHeight(size_.height()*0.01);
-  window_img_3->resize(size_.width()*0.2, size_.height()*0.5);
+  
   
   window_1->setMinimumWidth(size_.width()*0.1);
   window_1->resize(size_.width()*0.2, size_.height()*0.5);
@@ -276,10 +310,10 @@ void BaseStation::setInspectionView() {
   window_1->setMinimumHeight(size_.height()*0.2);
   
   window_2->move(0,0);
-  window_img_2->move(0,size_.height()*0.5);
+  
   window_cam->move(size_.width()*0.4,0);
-  window_img_3->move(size_.width()*0.4, size_.height()*0.5);
-  window_1->move(size_.width()*0.6, size_.height()*0.5);
+  
+  window_1->move(size_.width()*0.2, size_.height()*0.5);
   
 }
 
