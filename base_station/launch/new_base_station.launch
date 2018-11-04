@@ -135,7 +135,7 @@
   </node>
   
   <!-- Run localization on the laptop also -->
-  <include file="$(find amcl_sewer)/launch/amcl_virrei_amat.launch">
+  <include file="$(find amcl_sewer)/launch/amcl_av_pearson.launch">
     <arg name="visualization" value="false"/>
   </include>
   

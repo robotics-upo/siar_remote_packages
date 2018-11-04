@@ -80,6 +80,8 @@ QMainWindow(parent, flags), argc(argc), argv(argv), init_log_time(), node(NULL),
   window_2 = configureImageDisplay("/inspection1_cam/image_raw", "Inpection1");
   window_img_2 = configureImageDisplay("/inspection2_cam/image_raw", "Inpection2");
   window_img_3 = configureImageDisplay("/flip_image", "Thermal");
+  window_fl = configureImageDisplay("/front_left_web/rgb/image_raw", "Front Left");
+  window_fr = configureImageDisplay("/front_right_web/rgb/image_raw", "Front Right");
   
   // Create a Grid display. 
   grid_display = manager_->createDisplay( "rviz/Grid", "grid", true );
@@ -168,6 +170,8 @@ QMainWindow(parent, flags), argc(argc), argv(argv), init_log_time(), node(NULL),
   connect(checkBox_Gutter, SIGNAL(toggled(bool)), p_c_gutter, SLOT(setEnabled(bool)));
   connect(checkBox_Defects, SIGNAL(toggled(bool)), point_cloud_defects, SLOT(setEnabled(bool)));
   connect(checkBox, SIGNAL(toggled(bool)), marker_section, SLOT(setEnabled(bool)));
+  connect(node, SIGNAL(armModeReceived(bool)), this, SLOT(updateArmMode(bool)));
+  connect(node, SIGNAL(armTorqueReceived(uint8_t)), this, SLOT(updateArmTorque(uint8_t)));
   
   // Setviews:
   // Set the view
@@ -191,6 +195,8 @@ void BaseStation::setExploreView()
   window_cam->showNormal();
   window_img_2->showMinimized();
   window_img_3->showMinimized();
+  window_fl->showNormal();
+  window_fr->showNormal();
   
   window_1->setMinimumWidth(size_.width()*0.2);
   window_1->resize(size_.width()*0.4, size_.height()*0.55);
@@ -206,11 +212,25 @@ void BaseStation::setExploreView()
   window_3->setMaximumWidth(size_.width()*3);
   window_3->setMaximumHeight(size_.height()*1.2);
   window_3->setMinimumHeight(size_.height()*0.1);
-  window_3->resize(size_.width()*0.8, size_.height()*0.4);
+  window_3->resize(size_.width()*0.4, size_.height()*0.4);
+  
+  window_fl->setMinimumWidth(size_.width()*0.2);
+  window_fl->setMaximumWidth(size_.width()*3);
+  window_fl->setMaximumHeight(size_.height()*1.2);
+  window_fl->setMinimumHeight(size_.height()*0.1);
+  window_fl->resize(size_.width()*0.2, size_.height()*0.4);
+  
+  window_fr->setMinimumWidth(size_.width()*0.2);
+  window_fr->setMaximumWidth(size_.width()*3);
+  window_fr->setMaximumHeight(size_.height()*1.2);
+  window_fr->setMinimumHeight(size_.height()*0.1);
+  window_fr->resize(size_.width()*0.2, size_.height()*0.4);
   
   window_1->move(0,0);
   window_cam->move(size_.width()*0.4,0);
   window_3->move(0, size_.height()*0.54);
+  window_fl->move(size_.width()*0.4,size_.height()*0.54);
+  window_fr->move(size_.width()*0.6,size_.height()*0.54);
 }
 
 void BaseStation::setInspectionView() {
@@ -223,6 +243,8 @@ void BaseStation::setInspectionView() {
   window_cam->showNormal();
   window_img_2->showNormal();
   window_img_3->showNormal();
+  window_fl->showMinimized();
+  window_fr->showMinimized();
   
   window_2->setMinimumWidth(size_.width()*0.2);
   window_2->resize(size_.width()*0.4, size_.height()*0.5);
@@ -270,6 +292,8 @@ void BaseStation::setMissionView()
   window_3->showNormal();
   window_4->showNormal();
   window_cam->showMinimized();
+  window_fl->showMinimized();
+  window_fr->showMinimized();
   
   window_3->setMinimumWidth(size_.width()*0.2);
   window_3->setMaximumWidth(size_.width()*3);
@@ -296,6 +320,8 @@ void BaseStation::setServiceabilityView()
   window_3->showNormal();
   window_4->showMinimized();
   window_cam->showNormal();
+  window_fl->showMinimized();
+  window_fr->showMinimized();
   
   
   window_1->setMinimumWidth(size_.width()*0.2);
@@ -531,6 +557,17 @@ void BaseStation::updateRSSIStatus(const rssi_get::Nvip_status& status)
 {
   progressBar_rssi->setValue(status.rssi_perc);
 }
+
+void BaseStation::updateArmMode(const bool& mode)
+{
+  checkBox_arm_mode->setChecked(mode);
+}
+
+void BaseStation::updateArmTorque(const uint8_t& torque)
+{
+  comboBox_arm_torque->setCurrentIndex(torque);
+}
+
 
 void BaseStation::updateTreeContent(const string& string)
 {

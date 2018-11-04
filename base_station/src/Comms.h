@@ -36,6 +36,8 @@
 #include <boost/thread.hpp>
 #include <boost/thread/mutex.hpp>
 #include <std_msgs/String.h>
+#include <std_msgs/Bool.h>
+#include <std_msgs/UInt8.h>
 #endif
 // #include "CameraSettings.hpp"
 
@@ -55,17 +57,23 @@ signals:
   void siarStatusChanged(const siar_driver::SiarStatus new_status);
   void newRSSI(const rssi_get::Nvip_status new_status);
   void alertDBReceived(const std::string alert_string);
+  void armModeReceived(const bool arm_mode);
+  void armTorqueReceived(const uint8_t arm_torque);
   
 public slots:
   void setEmergencyStop();
   void setElecX(int new_x);
   
-private:
+public:
   double time_step;
   bool emergency, slow; // Are we in emergency mode?
   int automatic; // Are we in automatic mode?
-  
+  bool arm_mode;
+  uint8_t arm_torque;
+
+protected:
   ros::Subscriber status_sub, rssi_sub, text_sub;
+  ros::Subscriber arm_torque_sub, arm_mode_sub;
   ros::Publisher emergency_pub, elec_x_pub;
   functions::FormattedTime init_log_time;
   
@@ -77,6 +85,12 @@ private:
   
   //! @brief Gets the comms status
   void alertTextCallback(const std_msgs::String::ConstPtr& msg);
+  
+  //! @brief Gets the arm mode
+  void armModeCallback(const std_msgs::Bool::ConstPtr &msg);
+  
+  //! @brief Gets the arm arm_torque
+  void armTorqueCallback(const std_msgs::UInt8::ConstPtr &msg);
   
   // ROS stuff
   ros::AsyncSpinner *spinner;

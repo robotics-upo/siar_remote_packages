@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   functions
   rviz
   siar_driver
+  siar_model
 )
 
 set(qt_gui_cpp_USE_QT_MAJOR_VERSION 5 )

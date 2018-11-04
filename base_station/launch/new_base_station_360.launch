@@ -53,7 +53,7 @@
   <!-- Representation stuff-->
   <node pkg="rviz" type="rviz" name="rviz" args="-d $(find amcl_sewer)/launch/amcl_base_station.rviz"/>
   <node pkg="rqt_gui" type="rqt_gui" name="rqt" />
-  <include file="$(find siar_stl_model)/launch/siar.launch"/>
+  <!-- <include file="$(find siar_stl_model)/launch/siar.launch"/>-->
   
   <!-- Joystick node that will be sent over the UDP link-->
   <node pkg="joy" type="joy_node" name="joy_node"/>

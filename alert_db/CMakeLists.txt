@@ -4,6 +4,8 @@ project(alert_db)
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
 
+set(CMAKE_BUILD_TYPE Debug)
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -18,7 +20,12 @@ find_package(catkin REQUIRED COMPONENTS
   visualization_msgs
   sewer_graph
   functions
+  cv_bridge
+  image_transport
+  rosbag
 )
+
+find_package(OpenCV REQUIRED)
 
 SET(LIBS ${catkin_LIBRARIES} kmlbase kmldom kmlengine kmlconvenience)
 
@@ -39,8 +46,8 @@ generate_messages(
 catkin_package(
  INCLUDE_DIRS include
 #  LIBRARIES alert_db
-#  CATKIN_DEPENDS geometry_msgs message_generation message_runtime roscpp std_msgs visualization_msgs
-#  DEPENDS system_lib
+ CATKIN_DEPENDS geometry_msgs message_generation roscpp std_msgs visualization_msgs sewer_graph visualization_msgs functions cv_bridge image_transport rosbag
+ DEPENDS OpenCV
 )
 
 
@@ -66,6 +73,8 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}_node src/alert_db_node.cpp)
 
+add_executable(get_images_from_bag src/get_images_from_bag.cpp)
+
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
@@ -80,3 +89,5 @@ add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catk
 target_link_libraries(${PROJECT_NAME}_node
   ${LIBS}
 )
+
+target_link_libraries(get_images_from_bag ${LIBS})

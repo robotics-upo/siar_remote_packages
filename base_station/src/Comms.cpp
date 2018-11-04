@@ -87,6 +87,14 @@ void Comms::alertTextCallback(const std_msgs::String::ConstPtr& msg)
   emit alertDBReceived(msg->data);
 }
 
+void Comms::armModeCallback(const std_msgs::Bool::ConstPtr &msg) {
+  
+  emit armModeReceived(msg->data);
+}
+
+void Comms::armTorqueCallback(const std_msgs::UInt8::ConstPtr &msg) {
+  emit armTorqueReceived(msg->data);
+}
 
 void Comms::startComms()
 {
