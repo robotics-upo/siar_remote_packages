@@ -26,6 +26,7 @@
 #include <std_msgs/Float32.h>
 #include <siar_driver/SiarLightCommand.h>
 #include <rssi_get/Nvip_status.h>
+#include <siar_inspection/Activate.h>
 
 using namespace functions;
 using namespace std;
@@ -41,6 +42,12 @@ Comms::Comms(int argc, char** argv):spinner(NULL),emergency(false),slow(false),a
   status_sub = nh.subscribe<const siar_driver::SiarStatus::ConstPtr&>("siar_status", 2, &Comms::siarStatusCallback, this);
   rssi_sub = nh.subscribe<const rssi_get::Nvip_status::ConstPtr&>("/rssi_nvip_2400", 2, &Comms::nvipCallback, this);
   text_sub = nh.subscribe<const std_msgs::String::ConstPtr&>("/alert_text", 2, &Comms::alertTextCallback, this);
+  arm_mode_sub = nh.subscribe<const std_msgs::Bool::ConstPtr&>("/arm_mode", 2, &Comms::armModeCallback, this);
+  arm_torque_sub = nh.subscribe<const std_msgs::UInt8::ConstPtr&>("/arm_torque", 2, &Comms::armTorqueCallback, this);
+  
+  // Service clients
+  ROS_INFO("Activating the operation mode client");
+  map_analysis_op_mode_client = nh.serviceClient<siar_inspection::Activate>("/detect_pcl/set_operation_mode");
   
   // Publisher
   emergency_pub = nh.advertise<std_msgs::Bool>("/emergency_stop",2);
@@ -125,6 +132,17 @@ void Comms::shutdownComms()
   delete spinner;
   spinner = NULL;
 }
+
+void Comms::setAnalysisOperationMode(int mode)
+{
+  siar_inspection::ActivateRequest req;
+  siar_inspection::ActivateResponse res;
+  
+  req.mode = mode;
+  
+  map_analysis_op_mode_client.call(req,res);
+}
+
 
 // void Comms::siarStatusChanged(const siar_driver::SiarStatus new_status)
 // {

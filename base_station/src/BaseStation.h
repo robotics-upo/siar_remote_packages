@@ -109,7 +109,7 @@ private:
   rviz::Display* camera_display, *image_display, *image_display_2, *image_display_3, *image_display_fl, *image_display_fr;
   rviz::Display* marker_1, *marker_2, *marker_3, *marker_alerts;
   QMdiSubWindow *window_1, *window_2, *window_3, *window_4, *window_cam, *window_unused, *window_img_2, *window_img_3, *window_fl, *window_fr;
-  rviz::Display* marker_section, *point_cloud_defects, *p_c_curb, *p_c_gutter;
+  rviz::Display* marker_section, *point_cloud_defects, *p_c_curb, *p_c_gutter, *p_c_left_wall, *p_c_right_wall, *p_c_ceil;
   
   
 //   rviz::RenderPanel* 

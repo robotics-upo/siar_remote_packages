@@ -219,6 +219,19 @@
               <string>Arm torque:</string>
              </property>
             </widget>
+            <widget class="QLabel" name="label_siar_arm">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>110</y>
+               <width>131</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>TextLabel</string>
+             </property>
+            </widget>
            </widget>
           </item>
          </layout>
@@ -423,6 +436,43 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_6">
+            <property name="title">
+             <string>Inspection Mode</string>
+            </property>
+            <widget class="QComboBox" name="comboBox_inspection">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>30</y>
+               <width>131</width>
+               <height>27</height>
+              </rect>
+             </property>
+             <item>
+              <property name="text">
+               <string>INACTIVE</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>ALL</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>SERVICEABILITY</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>STRUCTURAL</string>
+              </property>
+             </item>
+            </widget>
+           </widget>
+          </item>
          </layout>
         </item>
         <item row="5" column="1">
@@ -522,7 +572,7 @@
            <item>
             <widget class="QCheckBox" name="checkBox_Curb">
              <property name="text">
-              <string>Curb</string>
+              <string>Curb + Gutter</string>
              </property>
              <property name="checked">
               <bool>true</bool>
@@ -540,9 +590,9 @@
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="checkBox_Gutter">
+            <widget class="QCheckBox" name="checkBox_Wall">
              <property name="text">
-              <string>Gutter</string>
+              <string>Wall + Ceil</string>
              </property>
              <property name="checked">
               <bool>true</bool>
@@ -565,7 +615,7 @@
           </property>
           <property name="icon">
            <iconset>
-            <normaloff>../../../../../../../../../../../.designer/icons/emer_stop.jpeg</normaloff>../../../../../../../../../../../.designer/icons/emer_stop.jpeg</iconset>
+            <normaloff>../../../../../../../../../../../../../../.designer/icons/emer_stop.jpeg</normaloff>../../../../../../../../../../../../../../.designer/icons/emer_stop.jpeg</iconset>
           </property>
           <property name="iconSize">
            <size>

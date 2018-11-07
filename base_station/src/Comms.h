@@ -63,6 +63,7 @@ signals:
 public slots:
   void setEmergencyStop();
   void setElecX(int new_x);
+  void setAnalysisOperationMode(int mode);
   
 public:
   double time_step;
@@ -79,6 +80,7 @@ protected:
   ros::Subscriber status_sub, rssi_sub, text_sub;
   ros::Subscriber arm_torque_sub, arm_mode_sub;
   ros::Publisher emergency_pub, elec_x_pub;
+  ros::ServiceClient map_analysis_op_mode_client;
   functions::FormattedTime init_log_time;
   
   //! @brief Gets the state data of an UAV

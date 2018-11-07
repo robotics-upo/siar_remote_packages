@@ -120,15 +120,40 @@ QMainWindow(parent, flags), argc(argc), argv(argv), init_log_time(), node(NULL),
   configurePointCloud(point_cloud_defects, "/serviceabilityProblems", manager_3);
   point_cloud_defects->subProp("Size (m)")->setValue(0.05);
   configurePointCloud(p_c_curb, "/curbCloud", manager_3);
-  p_c_curb->subProp("Size (m)")->setValue(0.05);
-  configurePointCloud(p_c_gutter, "/gutterCloud", manager_3);
+  p_c_curb->subProp("Size (m)")->setValue(0.02);
+  p_c_curb->subProp("Alpha")->setValue(0.3);
+  
   p_c_curb->subProp("Color Transformer")->setValue("FlatColor");
   p_c_curb->subProp("Color")->setValue("#0000FF");
-  p_c_gutter->subProp("Size (m)")->setValue(0.05);
-  window_cam->setWindowTitle("Front Camera");
+  
+  
+  configurePointCloud(p_c_gutter, "/gutterCloud", manager_3);
+  p_c_gutter->subProp("Size (m)")->setValue(0.02);
   p_c_gutter->subProp("Color Transformer")->setValue("FlatColor");
   p_c_gutter->subProp("Color")->setValue("#777777");
+  p_c_gutter->subProp("Alpha")->setValue(0.3);
+  
+  configurePointCloud(p_c_left_wall, "/leftWallCloud", manager_3);
+  p_c_left_wall->subProp("Size (m)")->setValue(0.02);
+  p_c_left_wall->subProp("Color Transformer")->setValue("FlatColor");
+  p_c_left_wall->subProp("Color")->setValue("#777777");
+  p_c_left_wall->subProp("Alpha")->setValue(0.3);
+  
+  configurePointCloud(p_c_right_wall, "/rightWallCloud", manager_3);
+  p_c_right_wall->subProp("Size (m)")->setValue(0.02);
+  p_c_right_wall->subProp("Color Transformer")->setValue("FlatColor");
+  p_c_right_wall->subProp("Color")->setValue("#777777");
+  p_c_right_wall->subProp("Alpha")->setValue(0.3);
+  
+  configurePointCloud(p_c_ceil, "/roofCloud", manager_3);
+  p_c_ceil->subProp("Size (m)")->setValue(0.02);
+  p_c_ceil->subProp("Color Transformer")->setValue("FlatColor");
+  p_c_ceil->subProp("Color")->setValue("#AAAAAA");
+  p_c_ceil->subProp("Alpha")->setValue(0.3);
+  
   // End of RVIZ stuff
+  
+   window_cam->setWindowTitle("Front Camera");
   
   // Tree widget!!
   tree_widget = new QTreeWidget(this);
@@ -167,11 +192,15 @@ QMainWindow(parent, flags), argc(argc), argv(argv), init_log_time(), node(NULL),
   connect(node, SIGNAL(alertDBReceived(const std::string&)), this, SLOT(updateTreeContent(const std::string&)));
   connect(horizontalSlider_width_indicator_2, SIGNAL(valueChanged(int)), node, SLOT(setElecX(int)));
   connect(checkBox_Curb, SIGNAL(toggled(bool)), p_c_curb, SLOT(setEnabled(bool)));
-  connect(checkBox_Gutter, SIGNAL(toggled(bool)), p_c_gutter, SLOT(setEnabled(bool)));
+  connect(checkBox_Curb, SIGNAL(toggled(bool)), p_c_gutter, SLOT(setEnabled(bool)));
+  connect(checkBox_Wall, SIGNAL(toggled(bool)), p_c_left_wall, SLOT(setEnabled(bool)));
+  connect(checkBox_Wall, SIGNAL(toggled(bool)), p_c_right_wall, SLOT(setEnabled(bool)));
+  connect(checkBox_Wall, SIGNAL(toggled(bool)), p_c_ceil, SLOT(setEnabled(bool)));
   connect(checkBox_Defects, SIGNAL(toggled(bool)), point_cloud_defects, SLOT(setEnabled(bool)));
   connect(checkBox, SIGNAL(toggled(bool)), marker_section, SLOT(setEnabled(bool)));
   connect(node, SIGNAL(armModeReceived(bool)), this, SLOT(updateArmMode(bool)));
   connect(node, SIGNAL(armTorqueReceived(uint8_t)), this, SLOT(updateArmTorque(uint8_t)));
+  connect(comboBox_inspection, SIGNAL(currentIndexChanged(int)), node, SLOT(setAnalysisOperationMode(int)));
   
   // Setviews:
   // Set the view
