@@ -104,7 +104,7 @@ private:
   rviz::RenderPanel* render_panel_,*render_panel_2, *render_panel_3;
   rviz::Display* sat_view;
   rviz::Display* point_cloud_1, *point_cloud_2, *point_cloud_3;
-  rviz::Display* robot_model_display;
+  rviz::Display* robot_model_display, *arm_display;
   rviz::Display* axes_display, *grid_display, *grid_display2;
   rviz::Display* camera_display, *image_display, *image_display_2, *image_display_3, *image_display_fl, *image_display_fr;
   rviz::Display* marker_1, *marker_2, *marker_3, *marker_alerts;

@@ -3,7 +3,7 @@
   
   <arg name="joystick" default="true"/>
   <arg name="mode_360" default="true"/>
-  <arg name="ip_address" default="192.168.168.11"/>
+  <arg name="ip" default="192.168.168.11"/>
   <arg name="detection" default="false"/>
   <arg name="nav_pitch" default="0.3"/>
   <arg name="nav_z" default="0.5"/>
@@ -17,6 +17,11 @@
   
   <!-- TF stuff (only odom is going through the wifi) -->
   <include file="$(find siar_launch)/launch/frames_siar.launch"/>
+  <include file="$(find siar_arm)/launch/arm_controller.launch">
+    <arg name="enable_server" value="false"/>
+  </include>
+  
+  
 <!--   <include file="$(find siar_launch)/launch/frames_7_cam_new_platform.launch"/> -->
 <!--   <include file="$(find siar_launch)/launch/electronics_transform_static.launch"/> -->
 
@@ -50,7 +55,7 @@
   
   <!-- Communication stuff -->
   <include file="$(find udp_bridge)/launch/udp_client360.launch" if="$(arg mode_360)">
-    <arg name="ip_address" value="$(arg ip_address)"/>
+    <arg name="ip_address" value="$(arg ip)"/>
     
   </include>
   
@@ -63,7 +68,7 @@
   <node pkg="joy" type="joy_node" name="joy_node" if="$(arg joystick)"/>
   
   <!-- Representation stuff-->
-  <node pkg="base_station" type="base_station" name="bs" >
+  <node pkg="base_station" type="base_station" name="bs" required="true">
     <param name="cloud/pitch" value="$(arg nav_pitch)"/>
     <param name="cloud_f_z" value="$(arg nav_z)"/>
     <param name="cloud_f_x" value="-0.2"/>
@@ -136,7 +141,7 @@
   </node>
   
   <!-- Run localization on the laptop also -->
-  <include file="$(find amcl_sewer)/launch/amcl_av_pearson.launch">
+  <include file="$(find amcl_sewer)/launch/amcl_garcia_faria.launch">
     <arg name="visualization" value="false"/>
   </include>
   

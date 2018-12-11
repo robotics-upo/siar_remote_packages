@@ -96,7 +96,8 @@ QMainWindow(parent, flags), argc(argc), argv(argv), init_log_time(), node(NULL),
   // Create a robot model display
   robot_model_display = manager_->createDisplay("rviz/MarkerArray", "marker", true);
   robot_model_display->setTopic("/siar_model", "visualization_msgs/MarkerArray");
-  
+  arm_display = manager_->createDisplay("rviz/MarkerArray", "arm_marker", true);
+  arm_display->setTopic("/arm_marker", "visualization_msgs/MarkerArray");
   
   window_3 = configureRVizDisplay(manager_2, render_panel_2, "map", mdiArea);
   window_3->setWindowTitle("Map");
