@@ -33,6 +33,7 @@
 #include <QTimer>
 #include <QMainWindow>
 #include <base_station/ui_siar_gui.h>
+#include <base_station/ui_about_siar_gui.h>
 
 // #include <qwt/qwt_dial.h>
 
@@ -68,6 +69,9 @@ public slots:
   void setServiceabilityView();
   void updateArmTorque(const uint8_t &torque);
   void updateArmMode(const bool &mode);
+  void showControls();
+  void showAbout();
+  void handleCommComboBox(const int &value);
   
 private slots:
   void updateValues();
@@ -81,6 +85,10 @@ private:
   
   //! Rviz views and related parameters
   void setRvizExplorationView(bool reverse);
+  
+  
+  double getElecVolt(double value);
+  
   CameraSettings cloud_camera_;
   CameraSettings map_camera_;
   
@@ -103,13 +111,15 @@ private:
   rviz::VisualizationManager* manager_,*manager_2, *manager_3;
   rviz::RenderPanel* render_panel_,*render_panel_2, *render_panel_3;
   rviz::Display* sat_view;
-  rviz::Display* point_cloud_1, *point_cloud_2, *point_cloud_3;
+  rviz::Display* point_cloud_1, *point_cloud_2, *point_cloud_3, *point_cloud_4;
   rviz::Display* robot_model_display, *arm_display;
   rviz::Display* axes_display, *grid_display, *grid_display2;
   rviz::Display* camera_display, *image_display, *image_display_2, *image_display_3, *image_display_fl, *image_display_fr;
   rviz::Display* marker_1, *marker_2, *marker_3, *marker_alerts;
   QMdiSubWindow *window_1, *window_2, *window_3, *window_4, *window_cam, *window_unused, *window_img_2, *window_img_3, *window_fl, *window_fr;
   rviz::Display* marker_section, *point_cloud_defects, *p_c_curb, *p_c_gutter, *p_c_left_wall, *p_c_right_wall, *p_c_ceil;
+  
+  std::list<double> elec_bat_volt;
   
   
 //   rviz::RenderPanel* 
@@ -128,9 +138,6 @@ private:
   
   // Tree widget
   QTreeWidget *tree_widget;
-  
-  // qwt_dial
-//   QwtDial *Dial_speed;
 };
 
 #endif // BASE_STATION_H____

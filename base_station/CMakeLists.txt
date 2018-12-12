@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(base_station)
 
+# set (CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} )
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -21,13 +23,15 @@ find_package(catkin REQUIRED COMPONENTS
 set(qt_gui_cpp_USE_QT_MAJOR_VERSION 5 )
 
 ## System dependencies are found with CMake's conventions
-find_package(Boost REQUIRED)
-find_package(OpenCV REQUIRED)
+# find_package(Boost REQUIRED)
+# find_package(OpenCV REQUIRED)
 # find_package(Ogre REQUIRED)
 
 # System dependencies are found with CMake's conventions
 if("${qt_gui_cpp_USE_QT_MAJOR_VERSION} " STREQUAL "5 ")
   find_package(Qt5Widgets REQUIRED)
+  find_package(Qt5WebKit REQUIRED)
+  find_package(Qt5WebKitWidgets REQUIRED)
 else()
   find_package(Qt4 COMPONENTS QtCore QtGui QtWebKit REQUIRED)
   include(${QT_USE_FILE})
@@ -51,7 +55,9 @@ catkin_package(
 include_directories(${catkin_INCLUDE_DIRS} ${CMAKE_CURRENT_BINARY_DIR} ${QWT_INCLUDE})
 #
 SET( siar_gui_UIS
-       ./ui/siar_gui.ui
+       ./ui/siar_gui.ui 
+       ./ui/controls.ui
+       ./ui/about_siar_gui.ui
   )
   
   set (siar_gui_SRCS
@@ -95,9 +101,9 @@ include_directories(
 # 
 # ## Base station exec
 add_executable(${PROJECT_NAME} src/base_station.cpp ${BASE_SRCS} ${siar_gui_HDRS} ${siar_gui_SRCS} ${siar_gui_MOCS} ${siar_gui_UIS_H})
-target_link_libraries(${PROJECT_NAME}
-  ${catkin_LIBRARIES} 
-)
+# target_link_libraries(${PROJECT_NAME}
+#   ${catkin_LIBRARIES} 
+# )
 
 add_dependencies(${PROJECT_NAME} siar_driver_generate_messages_cpp)
 
@@ -105,9 +111,9 @@ add_executable(test_comm src/testComm.cpp)
 target_link_libraries(test_comm ${catkin_LIBRARIES} )
 
 if("${qt_gui_cpp_USE_QT_MAJOR_VERSION} " STREQUAL "5 ")
-  target_link_libraries(${PROJECT_NAME} Qt5::Widgets qwt-qt5)
+  target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES}  Qt5::Widgets Qt5::WebKit Qt5::WebKitWidgets qwt-qt5)
 else()
-  target_link_libraries(${PROJECT_NAME} ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTWEBKIT_LIBRARY} qwt)
+  target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES}  ${QT_QTCORE_LIBRARY} ${QT_QTGUI_LIBRARY} ${QT_QTWEBKIT_LIBRARY} qwt)
 endif()
 # 
 # 

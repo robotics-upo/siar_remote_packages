@@ -53,6 +53,9 @@ public:
   
   void shutdownComms();
   
+  void setPublishDepth(bool publish);
+  void setCommsMode(u_int8_t mode);
+  
 signals:
   void siarStatusChanged(const siar_driver::SiarStatus new_status);
   void newRSSI(const rssi_get::Nvip_status new_status);
@@ -64,6 +67,7 @@ public slots:
   void setEmergencyStop();
   void setElecX(int new_x);
   void setAnalysisOperationMode(int mode);
+  
   
 public:
   double time_step;
@@ -79,7 +83,7 @@ public:
 protected:
   ros::Subscriber status_sub, rssi_sub, text_sub;
   ros::Subscriber arm_torque_sub, arm_mode_sub;
-  ros::Publisher emergency_pub, elec_x_pub;
+  ros::Publisher emergency_pub, elec_x_pub, publish_depth_pub, comms_mode_pub;
   ros::ServiceClient map_analysis_op_mode_client;
   functions::FormattedTime init_log_time;
   

@@ -24,6 +24,7 @@
 #include "functions/functions.h"
 #include <std_msgs/Bool.h>
 #include <std_msgs/Float32.h>
+#include <std_msgs/UInt8.h>
 #include <siar_driver/SiarLightCommand.h>
 #include <rssi_get/Nvip_status.h>
 #include <siar_inspection/Activate.h>
@@ -52,7 +53,8 @@ Comms::Comms(int argc, char** argv):spinner(NULL),emergency(false),slow(false),a
   // Publisher
   emergency_pub = nh.advertise<std_msgs::Bool>("/emergency_stop",2);
   elec_x_pub = nh.advertise<std_msgs::Float32>("/width_pos",2);
-  
+  publish_depth_pub = nh.advertise<std_msgs::Bool>("/publish_depth",2);
+  comms_mode_pub = nh.advertise<std_msgs::UInt8>("/comms_mode", 2, true);
   
   // Get parameters
   if (pnh.hasParam("n_inspection_cams")) {
@@ -142,6 +144,23 @@ void Comms::setAnalysisOperationMode(int mode)
   
   map_analysis_op_mode_client.call(req,res);
 }
+
+void Comms::setCommsMode(u_int8_t mode)
+{
+  std_msgs::UInt8 msg;
+  msg.data = mode;
+  comms_mode_pub.publish(msg);
+}
+
+void Comms::setPublishDepth(bool publish)
+{
+  std_msgs::Bool msg;
+  msg.data = publish;
+  publish_depth_pub.publish(msg);
+}
+
+
+
 
 
 // void Comms::siarStatusChanged(const siar_driver::SiarStatus new_status)

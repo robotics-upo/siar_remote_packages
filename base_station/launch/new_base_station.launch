@@ -60,7 +60,7 @@
   </include>
   
   <include file="$(find udp_bridge)/launch/udp_client.launch" unless="$(arg mode_360)">
-    <arg name="ip_address" value="$(arg ip_address)"/>
+    <arg name="ip_address" value="$(arg ip)"/>
     
   </include>  
   
@@ -131,6 +131,24 @@
     <remap from="depth" to="/front_right/depth_registered/image_raw"/>              # Topic for the camera depth
     <remap from="info" to="/front_right_web/depth_registered/camera_info"/>   # Topic for the camera info
     <remap from="cloud" to="/front_right/points"/>                # Topic name for output point cloud
+    <param name="range_min" value = "0.5"/>                             # Min range in meters for point cloud generation
+    <param name="range_max" value = "6.0"/>                             # Max range in meters for point cloud generation
+    <param name="down_sampling" value = "1"/>                   # Camera down sampling factor. Values: 1, 2 or 4. The bigger the faster.
+    <param name="roi_x" value="$(arg roi_x)"/>
+    <param name="roi_y" value="$(arg roi_y)"/>
+    <param name="roi_w" value="$(arg roi_w2)"/>
+    <param name="roi_h" value="$(arg roi_h2)"/>
+  </node>
+  
+  <node name="uncompresser_up" pkg="image_transport" type="republish"
+        args="compressedDepth in:=/up_web/depth_registered/image_raw raw out:=/up/depth_registered/image_raw"/>
+   <node name="uncompresser_up_rgb" pkg="image_transport" type="republish"
+        args="compressed in:=/up_web/rgb/image_raw raw out:=/up/rgb/image_raw"/>
+   
+  <node pkg="depth2cloud" type="depth2cloud_node" name="up_depth2cloud_node" output="screen" >
+    <remap from="depth" to="/up/depth_registered/image_raw"/>              # Topic for the camera depth
+    <remap from="info" to="/up_web/depth_registered/camera_info"/>   # Topic for the camera info
+    <remap from="cloud" to="/up/points"/>                # Topic name for output point cloud
     <param name="range_min" value = "0.5"/>                             # Min range in meters for point cloud generation
     <param name="range_max" value = "6.0"/>                             # Max range in meters for point cloud generation
     <param name="down_sampling" value = "1"/>                   # Camera down sampling factor. Values: 1, 2 or 4. The bigger the faster.

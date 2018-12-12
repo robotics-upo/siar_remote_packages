@@ -43,6 +43,8 @@
 
 #include "OGRE/OgreCamera.h"
 
+#include <QtWebKitWidgets/QWebView>
+
 using namespace std;
 using namespace functions;
 using boost::lexical_cast;
@@ -74,6 +76,7 @@ QMainWindow(parent, flags), argc(argc), argv(argv), init_log_time(), node(NULL),
   configurePointCloud(point_cloud_1,"/front/points", manager_);
   configurePointCloud(point_cloud_2,"/front_left/points", manager_);
   configurePointCloud(point_cloud_3,"/front_right/points", manager_);
+  configurePointCloud(point_cloud_4,"/up/points", manager_);
 //   window_1->resize(640, 480);
   window_1->setWindowTitle("PointClouds");
   
@@ -202,6 +205,9 @@ QMainWindow(parent, flags), argc(argc), argv(argv), init_log_time(), node(NULL),
   connect(node, SIGNAL(armModeReceived(bool)), this, SLOT(updateArmMode(bool)));
   connect(node, SIGNAL(armTorqueReceived(uint8_t)), this, SLOT(updateArmTorque(uint8_t)));
   connect(comboBox_inspection, SIGNAL(currentIndexChanged(int)), node, SLOT(setAnalysisOperationMode(int)));
+  connect(comboBox_communications, SIGNAL(currentIndexChanged(int)), node, SLOT(handleCommsComboBox(int)));
+  connect(actionControls, SIGNAL(triggered()), this, SLOT(showControls()));
+  connect(actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
   
   // Setviews:
   // Set the view
@@ -582,7 +588,16 @@ void BaseStation::updateValues()
 
 void BaseStation::updateSiarStatus(const siar_driver::SiarStatus& state)
 {
-  progressBar_4_elec_bat->setValue(  state.elec_battery.percentage);
+  
+  // Handle Percentage:
+  double v = getElecVolt(state.elec_battery.voltage);
+  ROS_INFO("Elec Volt= %f", v);
+  int elec_perc = (v - 11.9)*80.0;
+  elec_perc = saturate(elec_perc, 0 , 100);
+  
+  progressBar_4_elec_bat->setValue(  elec_perc);
+  
+  
   progressBar_5_motor_bat->setValue(  state.motor_battery.percentage);
   horizontalSlider_width_indicator->setValue(state.width);
   if (!state.reverse) {
@@ -615,6 +630,18 @@ void BaseStation::updateSiarStatus(const siar_driver::SiarStatus& state)
   }
  
   last_status = state;
+}
+
+double BaseStation::getElecVolt(double value) {
+  elec_bat_volt.push_back(value);
+  if (elec_bat_volt.size() > 500) {
+    elec_bat_volt.pop_front();
+  }
+  double ret_val = 0;
+  for (auto x:elec_bat_volt) {
+    ret_val += x;
+  }
+  return ret_val/elec_bat_volt.size();
 }
 
 void BaseStation::updateRSSIStatus(const rssi_get::Nvip_status& status)
@@ -708,6 +735,54 @@ void BaseStation::setRvizExplorationView(bool reverse)
     }
   }
 }
+
+void BaseStation::showControls()
+{
+  QDialog *q = new QMessageBox(this);
+  q->resize(1200, 800);
+  QWebView *view = new QWebView(q);
+  QUrl q_url(QString("file::/home/siar/siar_ws/src/siar_remote_packages/base_station/web/controls.html"));
+  view->load(q_url);
+  q ->show();
+}
+
+
+void BaseStation::showAbout()
+{
+  QDialog *q = new QMessageBox(this);
+  q->resize(1200, 800);
+  QWebView *view = new QWebView(q);
+  QUrl q_url(QString("file::/home/siar/siar_ws/src/siar_remote_packages/base_station/web/about.html"));
+  view->load(q_url);
+  q ->show();
+  
+}
+
+void BaseStation::handleCommComboBox(const int& value)
+{
+  ROS_INFO("Handling CommComoBox. Value = %d", value);
+  switch (value) {
+    case 1:
+      node->setPublishDepth(false);
+      node->setCommsMode(0);
+      break;
+    case 2:
+      node->setPublishDepth(false);
+      node->setCommsMode(1);
+      break;
+      
+    case 3:
+      node->setPublishDepth(false);
+      node->setCommsMode(2);
+      break;
+    
+    case 0:
+    default:
+      node->setPublishDepth(true);
+      node->setCommsMode(0);
+  }
+}
+
 
 
 // QColor BaseStation::selectColor(unsigned int i)

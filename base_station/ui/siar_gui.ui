@@ -99,6 +99,39 @@
         <item row="7" column="1">
          <layout class="QVBoxLayout" name="verticalLayout_8">
           <item>
+           <widget class="QLabel" name="label_siar_arm">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+             </font>
+            </property>
+            <property name="text">
+             <string>Communications</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="comboBox_communications">
+            <item>
+             <property name="text">
+              <string>ALL</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>DISABLE DEPTH</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>ONLY TELEOP</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item>
            <widget class="QLabel" name="label_6">
             <property name="maximumSize">
              <size>
@@ -161,77 +194,48 @@
             <property name="title">
              <string>Arm group</string>
             </property>
-            <widget class="QCheckBox" name="checkBox_arm_mode">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>30</y>
-               <width>121</width>
-               <height>22</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>Arm Mode</string>
-             </property>
-            </widget>
-            <widget class="QComboBox" name="comboBox_arm_torque">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>80</y>
-               <width>121</width>
-               <height>27</height>
-              </rect>
-             </property>
+            <layout class="QVBoxLayout" name="verticalLayout_5">
              <item>
-              <property name="text">
-               <string>NOT ARMED</string>
-              </property>
+              <widget class="QCheckBox" name="checkBox_arm_mode">
+               <property name="text">
+                <string>Arm Mode</string>
+               </property>
+              </widget>
              </item>
              <item>
-              <property name="text">
-               <string>BRAKE</string>
-              </property>
+              <widget class="QLabel" name="label_8">
+               <property name="font">
+                <font>
+                 <pointsize>12</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                </font>
+               </property>
+               <property name="text">
+                <string>Arm torque:</string>
+               </property>
+              </widget>
              </item>
              <item>
-              <property name="text">
-               <string>ARMED</string>
-              </property>
+              <widget class="QComboBox" name="comboBox_arm_torque">
+               <item>
+                <property name="text">
+                 <string>NOT ARMED</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>BRAKE</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>ARMED</string>
+                </property>
+               </item>
+              </widget>
              </item>
-            </widget>
-            <widget class="QLabel" name="label_8">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>60</y>
-               <width>101</width>
-               <height>17</height>
-              </rect>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>12</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Arm torque:</string>
-             </property>
-            </widget>
-            <widget class="QLabel" name="label_siar_arm">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>110</y>
-               <width>131</width>
-               <height>20</height>
-              </rect>
-             </property>
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-            </widget>
+            </layout>
            </widget>
           </item>
          </layout>
@@ -560,6 +564,16 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
+            <widget class="QCheckBox" name="checkBox_enable_all">
+             <property name="text">
+              <string>Enable all</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QCheckBox" name="checkBox">
              <property name="text">
               <string>Alert Info</string>
@@ -666,6 +680,9 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="separator"/>
+    <addaction name="actionControls"/>
+    <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -715,6 +732,11 @@
     <string>Inspection</string>
    </property>
   </action>
+  <action name="actionControls">
+   <property name="text">
+    <string>Controls</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -724,5 +746,70 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>checkBox_enable_all</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_Curb</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>89</x>
+     <y>210</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>89</x>
+     <y>290</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_enable_all</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_Defects</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>89</x>
+     <y>210</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>89</x>
+     <y>330</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_enable_all</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_Wall</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>89</x>
+     <y>210</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>89</x>
+     <y>370</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_enable_all</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>89</x>
+     <y>210</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>89</x>
+     <y>250</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
