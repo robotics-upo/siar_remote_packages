@@ -126,6 +126,11 @@
             </item>
             <item>
              <property name="text">
+              <string>TELEOP + INSPECTION</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
               <string>ONLY TELEOP</string>
              </property>
             </item>

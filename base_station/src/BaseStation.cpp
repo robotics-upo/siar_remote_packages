@@ -205,7 +205,7 @@ QMainWindow(parent, flags), argc(argc), argv(argv), init_log_time(), node(NULL),
   connect(node, SIGNAL(armModeReceived(bool)), this, SLOT(updateArmMode(bool)));
   connect(node, SIGNAL(armTorqueReceived(uint8_t)), this, SLOT(updateArmTorque(uint8_t)));
   connect(comboBox_inspection, SIGNAL(currentIndexChanged(int)), node, SLOT(setAnalysisOperationMode(int)));
-  connect(comboBox_communications, SIGNAL(currentIndexChanged(int)), node, SLOT(handleCommsComboBox(int)));
+  connect(comboBox_communications, SIGNAL(currentIndexChanged(int)), this, SLOT(handleCommComboBox(int)));
   connect(actionControls, SIGNAL(triggered()), this, SLOT(showControls()));
   connect(actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
   
@@ -738,23 +738,29 @@ void BaseStation::setRvizExplorationView(bool reverse)
 
 void BaseStation::showControls()
 {
-  QDialog *q = new QMessageBox(this);
-  q->resize(1200, 800);
+  QDialog *q = new QDialog(this);
+  
   QWebView *view = new QWebView(q);
-  QUrl q_url(QString("file::/home/siar/siar_ws/src/siar_remote_packages/base_station/web/controls.html"));
+  QUrl q_url(QString("file:/home/chur/siar_ws/src/siar_remote_packages/base_station/web/controls.html"));
   view->load(q_url);
+  view->resize(1200,800);
   q ->show();
+  q->setMaximumSize(1500,1000);
+  q->setFixedSize(1200,800);
+  q->resize(1200, 800);
 }
 
 
 void BaseStation::showAbout()
 {
-  QDialog *q = new QMessageBox(this);
-  q->resize(1200, 800);
+  QDialog *q = new QDialog(this);
+  
   QWebView *view = new QWebView(q);
-  QUrl q_url(QString("file::/home/siar/siar_ws/src/siar_remote_packages/base_station/web/about.html"));
+  QUrl q_url(QString("file:/home/chur/siar_ws/src/siar_remote_packages/base_station/web/about.html"));
   view->load(q_url);
+  view->resize(800, 600);
   q ->show();
+  q->setFixedSize(800, 600);
   
 }
 
