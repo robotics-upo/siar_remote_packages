@@ -6,7 +6,7 @@
   <arg name="bag_file" default="/datos/siar_2018-06-27-10-31-55.bag"/>
   <arg name="play_bag" default="true"/>
   
-  <arg name="camera" default="/front"/>
+  <arg name="camera" default="/back"/>
   
   <arg name="start" default="0"/>
   <arg name="rate" default="1"/>
@@ -22,14 +22,15 @@
   <arg name="roi_h2" default="470"/>
   
   
-  <arg name="min_thres_defects" default="0.01"/> <!--Squared distance for error detection 0.02-->
+  <arg name="min_thres_defects" default="0.02"/> <!--Squared distance for error detection 0.02-->
   <arg name="max_thres_defects" default="0.1"/> <!--Squared distance 0.1-->
   <arg name="global_align_thres" default="0.4"/> <!--ICP Euclidean fitness score (e.g., sum of squared distances from the source to the target)-->
   <arg name="hysteresis" default="10"/> <!--Hysteresis (iterations to raise an alarm)-->
-  <arg name="min_serviceability_level" default="0.11"/> <!--Free space from base_link (in meters)-->
+  <arg name="min_serviceability_level" default="0.05"/> <!--Free space from base_link (in meters)-->
 
   <arg name="serviceability" default="false"/>
   
+  <arg name="location" default="amcl_garcia_faria"/>
   
   <param name="use_sim_time" value="true" />
   
@@ -38,11 +39,17 @@
   
   <node pkg="odom_to_tf" type="odom_to_tf.py" name="odom_to_tf"/>
   
-  <node name="flipper" type="flip_image_node" pkg="flip_image" output="screen" respawn="true">
-    <remap from="/input_image" to="/front_left/rgb/image_raw"/>
-  </node>
+  <!-- <node name="flipper1" type="flip_image_node" pkg="flip_image" output="screen" respawn="true"> -->
+    <!-- <remap from="/input_image" to="/back_right/rgb/image_raw"/> -->
+    <!-- <remap from="/input_image" to="/front_left/rgb/image_raw"/> -->
+  <!-- </node> -->
+
+<node name="flipper2" type="flip_image_node" pkg="flip_image" output="screen" respawn="true">
+  <remap from="/input_image" to="/back_right/rgb/image_raw"/>
+</node>
+
   <node name="compresser_fliped" pkg="image_transport" type="republish"
-        args="raw in:=/flip_image compressed out:=$(arg camera)_left_web/rgb/image_raw"/>
+        args="raw in:=/flip_image compressed out:=/front_left_web/rgb/image_raw"/>
   
   
   <!-- Representation stuff-->
@@ -56,9 +63,10 @@
     <remap from="/front_web/rgb/camera_info" to="$(arg camera)/rgb/camera_info"/>
     <remap from="/front_web/rgb/image_raw/compressed" to="$(arg camera)/rgb/image_raw/compressed"/>
     <remap from="/front_left_web/rgb/camera_info" to="$(arg camera)_left/rgb/camera_info"/>
-<!--     <remap from="/front_left_web/rgb/image_raw/compressed" to="$(arg camera)_left/rgb/image_raw/compressed"/> -->
-    <remap from="/front_right_web/rgb/camera_info" to="$(arg camera)_right/rgb/camera_info"/>
-    <remap from="/front_right_web/rgb/image_raw/compressed" to="$(arg camera)_right/rgb/image_raw/compressed"/>
+    <!-- <remap from="/front_left_web/rgb/image_raw/compressed" to="$(arg camera)_left/rgb/image_raw/compressed"/> -->
+    <remap from="/front_right_web/rgb/camera_info" to="$(arg camera)_left/rgb/camera_info"/>
+    <remap from="/front_right_web/rgb/image_raw/compressed" to="$(arg camera)_left/rgb/image_raw/compressed"/>
+    <remap from="/inspection1_cam/image_raw/compressed" to="/inspection1_c/image_raw/compressed"/>
   </node>
   
   <include file="$(find siar_model)/launch/siar_model_viz.launch"/>
@@ -141,9 +149,13 @@
   
 </node>
 
+<include file="$(find siar_arm)/launch/arm_controller.launch">
+    <arg name="enable_server" value="false"/>
+  </include>
+
 <!-- Run localization on the laptop also -->
-  <include file="$(find amcl_sewer)/launch/amcl_garcia_faria.launch">
-    <arg name="visualization" value="true"/>
+  <include file="$(find amcl_sewer)/launch/$(arg location).launch">
+    <arg name="visualization" value="false"/>
   </include>
   
   <node pkg="alert_db" type="alert_db_node" name="alert_db" output="screen">

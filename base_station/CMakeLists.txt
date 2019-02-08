@@ -45,7 +45,7 @@ catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES base_station
  CATKIN_DEPENDS rosbag roscpp sensor_msgs std_msgs compressed_depth_image_transport cv_bridge functions rviz
- DEPENDS boost opencv Qt 
+ #DEPENDS boost opencv Qt 
 )
 
 ###########

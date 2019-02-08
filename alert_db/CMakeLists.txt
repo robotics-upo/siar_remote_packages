@@ -23,6 +23,7 @@ find_package(catkin REQUIRED COMPONENTS
   cv_bridge
   image_transport
   rosbag
+  amcl_sewer
 )
 
 find_package(OpenCV REQUIRED)
@@ -33,6 +34,7 @@ SET(LIBS ${catkin_LIBRARIES} kmlbase kmldom kmlengine kmlconvenience)
 add_service_files(
   FILES
   GenerateAlert.srv
+  ServiceabilityAlert.srv
 )
 
 ## Generate added messages and services with any dependencies listed here
@@ -46,7 +48,7 @@ generate_messages(
 catkin_package(
  INCLUDE_DIRS include
 #  LIBRARIES alert_db
- CATKIN_DEPENDS geometry_msgs message_generation roscpp std_msgs visualization_msgs sewer_graph visualization_msgs functions cv_bridge image_transport rosbag
+ CATKIN_DEPENDS geometry_msgs amcl_sewer message_generation roscpp std_msgs visualization_msgs sewer_graph visualization_msgs functions cv_bridge image_transport rosbag
  DEPENDS OpenCV
 )
 
@@ -83,7 +85,7 @@ add_executable(get_images_from_bag src/get_images_from_bag.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} )
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}_node
