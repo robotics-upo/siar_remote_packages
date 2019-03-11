@@ -105,7 +105,7 @@ add_executable(${PROJECT_NAME} src/base_station.cpp ${BASE_SRCS} ${siar_gui_HDRS
 #   ${catkin_LIBRARIES} 
 # )
 
-add_dependencies(${PROJECT_NAME} siar_driver_generate_messages_cpp)
+add_dependencies(${PROJECT_NAME} siar_driver_generate_messages_cpp siar_inspection_generate_messages_cpp)
 
 add_executable(test_comm src/testComm.cpp)
 target_link_libraries(test_comm ${catkin_LIBRARIES} )

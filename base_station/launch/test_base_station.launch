@@ -53,7 +53,7 @@
   
   
   <!-- Representation stuff-->
-  <node pkg="base_station" type="base_station" name="bs" output="screen">
+  <node pkg="base_station" type="base_station" name="bs" output="screen">  <--!  launch-prefix="xterm -e gdb - -args" > -->
     <param name="cloud_pitch" value="$(arg nav_pitch)"/>
     <param name="cloud_f_z" value="$(arg nav_z)"/>
     <param name="cloud_f_x" value="-0.2"/>
