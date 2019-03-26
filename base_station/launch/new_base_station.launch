@@ -85,6 +85,8 @@
     <remap from="/front_left_web/rgb/image_raw" to="/front_left/rgb/image_raw"/>
     <remap from="/front_right_web/rgb/camera_info" to="/front_right_web/rgb/camera_info"/>
     <remap from="/front_right_web/rgb/image_raw" to="/front_right/rgb/image_raw"/>
+    <param name="controls_html_file" value="$(find base_station)/web/controls.html"/>
+    <param name="about_html_file" value="$(find base_station)/web/about.html"/>
   </node>
   
   <include file="$(find siar_model)/launch/siar_model_viz.launch"/>

@@ -1,0 +1,9 @@
+<RCC>
+  <qresource>
+    <file>controls.html</file>
+    <file>about.html</file>
+    <file>Figures/controller_arm_mode.png</file>
+    <file>Figures/controller_nav_mode.png</file>
+  </qresource>
+</RCC>
+

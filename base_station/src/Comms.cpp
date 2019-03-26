@@ -67,7 +67,19 @@ Comms::Comms(int argc, char** argv):spinner(NULL),emergency(false),slow(false),a
   } else {
     thermal_cam = false; // One or two
   }
-  
+  if (pnh.hasParam("controls_html_file")) {
+    pnh.getParam("controls_html_file", controls_html_file);
+    controls_html_file = "file:" + controls_html_file;
+  }
+  else 
+    controls_html_file = "file:/home/chur/siar_ws/src/siar_remote_packages/base_station/web/controls.html";
+
+  if (pnh.hasParam("about_html_file")) {
+    pnh.getParam("about_html_file", about_html_file);
+    about_html_file = "file:" + about_html_file;
+  }
+  else 
+    about_html_file = "file:/home/chur/siar_ws/src/siar_remote_packages/base_station/web/about.html";
 }
  
 

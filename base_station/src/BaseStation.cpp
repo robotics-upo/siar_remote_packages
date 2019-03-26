@@ -741,7 +741,7 @@ void BaseStation::showControls()
   QDialog *q = new QDialog(this);
   
   QWebView *view = new QWebView(q);
-  QUrl q_url(QString("file:/home/chur/siar_ws/src/siar_remote_packages/base_station/web/controls.html"));
+  QUrl q_url(QString::fromStdString(node->controls_html_file));
   view->load(q_url);
   view->resize(1200,800);
   q ->show();
@@ -756,7 +756,7 @@ void BaseStation::showAbout()
   QDialog *q = new QDialog(this);
   
   QWebView *view = new QWebView(q);
-  QUrl q_url(QString("file:/home/chur/siar_ws/src/siar_remote_packages/base_station/web/about.html"));
+  QUrl q_url(QString::fromStdString(node->about_html_file));
   view->load(q_url);
   view->resize(800, 600);
   q ->show();
