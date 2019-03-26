@@ -40,6 +40,8 @@ else()
 
 SET ( QWT_INCLUDE /usr/include/qwt/)
 
+set(QT_RESOURCES icons/resource.qrc web/web_resource.qrc)
+
 # roslint_cpp()
 
 catkin_package(
@@ -77,6 +79,7 @@ set(siar_gui_HDRS
 if("${qt_gui_cpp_USE_QT_MAJOR_VERSION} " STREQUAL "5 ")
   qt5_wrap_cpp(siar_gui_MOCS ${siar_gui_HDRS})
   qt5_wrap_ui(siar_gui_UIS_H ${siar_gui_UIS})
+  qt5_add_resources(QT_RESOURCES_CPP ${QT_RESOURCES})
 else()
   qt4_wrap_cpp(siar_gui_MOCS ${siar_gui_HDRS})
   qt4_wrap_ui(siar_gui_UIS_H ${siar_gui_UIS})
@@ -101,7 +104,7 @@ include_directories(
 
 # 
 # ## Base station exec
-add_executable(${PROJECT_NAME} src/base_station.cpp ${BASE_SRCS} ${siar_gui_HDRS} ${siar_gui_SRCS} ${siar_gui_MOCS} ${siar_gui_UIS_H})
+add_executable(${PROJECT_NAME} src/base_station.cpp ${BASE_SRCS} ${siar_gui_HDRS} ${siar_gui_SRCS} ${siar_gui_MOCS} ${siar_gui_UIS_H} ${QT_RESOURCES_CPP})
 # target_link_libraries(${PROJECT_NAME}
 #   ${catkin_LIBRARIES} 
 # )

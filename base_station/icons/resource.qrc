@@ -1,0 +1,7 @@
+<RCC>
+  <qresource>
+    <file>controller_arm_mode.png</file>
+    <file>controller_nav_mode.png</file>
+    <file>emer_stop.jpeg</file>
+  </qresource>
+</RCC>

@@ -80,6 +80,8 @@ public:
   int n_inspection_cams;
   bool thermal_cam;
 
+  std::string controls_html_file, about_html_file;
+
 protected:
   ros::Subscriber status_sub, rssi_sub, text_sub;
   ros::Subscriber arm_torque_sub, arm_mode_sub;
