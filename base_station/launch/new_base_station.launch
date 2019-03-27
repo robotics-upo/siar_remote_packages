@@ -2,6 +2,7 @@
 <launch>
   
   <arg name="joystick" default="true"/>
+  <arg name="joy_dev" default="/dev/input/js0"/>
   <arg name="mode_360" default="true"/>
   <arg name="ip" default="192.168.168.11"/>
   <arg name="detection" default="false"/>
@@ -14,6 +15,8 @@
   <arg name="roi_h" default="230"/>
   <arg name="roi_w2" default="150"/>
   <arg name="roi_h2" default="110"/>
+
+  <arg name="location" default="barcelona"/>
   
   <!-- TF stuff (only odom is going through the wifi) -->
   <include file="$(find siar_launch)/launch/frames_siar.launch"/>
@@ -65,7 +68,10 @@
   </include>  
   
   <!-- Joystick node that will be sent over the UDP link-->
-  <node pkg="joy" type="joy_node" name="joy_node" if="$(arg joystick)"/>
+  <node pkg="joy" type="joy_node" name="joy_node" if="$(arg joystick)">
+   <param name="dev" value="$(arg joy_dev)"/>
+  </node>
+
   
   <!-- Representation stuff-->
   <node pkg="base_station" type="base_station" name="bs" required="true" output="screen">
@@ -162,7 +168,7 @@
   </node>
   
   <!-- Run localization on the laptop also -->
-  <include file="$(find amcl_sewer)/launch/amcl_garcia_faria.launch">
+  <include file="$(find amcl_sewer)/launch/amcl_$(arg location).launch">
     <arg name="visualization" value="false"/>
   </include>
   
