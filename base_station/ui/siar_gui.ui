@@ -698,6 +698,7 @@
     <addaction name="actionAlert"/>
     <addaction name="actionServiceability"/>
     <addaction name="actionInspection"/>
+    <addaction name="actionGasInfo"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -735,6 +736,11 @@
   <action name="actionInspection">
    <property name="text">
     <string>Inspection</string>
+   </property>
+  </action>
+  <action name="actionGasInfo">
+   <property name="text">
+    <string>Gas Information</string>
    </property>
   </action>
   <action name="actionControls">

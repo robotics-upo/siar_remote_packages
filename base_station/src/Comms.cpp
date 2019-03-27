@@ -80,6 +80,10 @@ Comms::Comms(int argc, char** argv):spinner(NULL),emergency(false),slow(false),a
   }
   else 
     about_html_file = "file:/home/chur/siar_ws/src/siar_remote_packages/base_station/web/about.html";
+
+  if (pnh.hasParam("rqt_view")) {
+    pnh.getParam("rqt_view", rqt_view);
+  }
 }
  
 

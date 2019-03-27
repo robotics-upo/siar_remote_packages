@@ -34,6 +34,7 @@
 #include <QMainWindow>
 #include <base_station/ui_siar_gui.h>
 #include <base_station/ui_about_siar_gui.h>
+#include <QProcess>
 
 // #include <qwt/qwt_dial.h>
 
@@ -72,6 +73,7 @@ public slots:
   void showControls();
   void showAbout();
   void handleCommComboBox(const int &value);
+  void showGasInfo();
   
 private slots:
   void updateValues();
@@ -100,6 +102,7 @@ private:
   
   // Communication stuff
   Comms *node;
+  QProcess *rqt_process;
   
   // Last messages
   siar_driver::SiarStatus last_status;

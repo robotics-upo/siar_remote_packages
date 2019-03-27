@@ -55,6 +55,8 @@ QMainWindow(parent, flags), argc(argc), argv(argv), init_log_time(), node(NULL),
 {
   setupUi(this);
   QwtDialSimpleNeedle *nd = new QwtDialSimpleNeedle(QwtDialSimpleNeedle::Arrow, Qt::white, Qt::red);
+
+  rqt_process = NULL;
   
   QwtDial &d = *Dial_speed; 
   
@@ -208,6 +210,7 @@ QMainWindow(parent, flags), argc(argc), argv(argv), init_log_time(), node(NULL),
   connect(comboBox_communications, SIGNAL(currentIndexChanged(int)), this, SLOT(handleCommComboBox(int)));
   connect(actionControls, SIGNAL(triggered()), this, SLOT(showControls()));
   connect(actionAbout, SIGNAL(triggered()), this, SLOT(showAbout()));
+  connect(actionGasInfo, SIGNAL(triggered()), this, SLOT(showGasInfo()));
   
   // Setviews:
   // Set the view
@@ -557,7 +560,10 @@ void BaseStation::configureMap() {
 BaseStation::~BaseStation()
 {
   stopComms();
-  
+  if (rqt_process != NULL) {
+    rqt_process->kill();
+    delete rqt_process;
+  }
   // Erase plots
 //   clearLogs();
 }
@@ -787,6 +793,29 @@ void BaseStation::handleCommComboBox(const int& value)
       node->setPublishDepth(true);
       node->setCommsMode(0);
   }
+}
+
+void BaseStation::showGasInfo() {
+
+  if(rqt_process != NULL) {
+    if (rqt_process->state() == QProcess::NotRunning) {
+      delete rqt_process;
+      rqt_process = NULL;
+
+    }
+  }
+
+  if (rqt_process == NULL) {
+    rqt_process = new QProcess(this);
+    QStringList l;
+    l << "--perspective-file";
+    l.push_back(QString::fromStdString(node->rqt_view));
+
+    rqt_process->start("rqt", l);
+    // rqt_process->start("gnome-terminal", QStringList() << "source ~/catkin_ws/devel/setup.bash; rqt -p" << node->rqt_view);
+    cout << "Created rqt process. Argunments: " << node->rqt_view << endl;
+  }
+
 }
 
 

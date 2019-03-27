@@ -68,7 +68,7 @@
   <node pkg="joy" type="joy_node" name="joy_node" if="$(arg joystick)"/>
   
   <!-- Representation stuff-->
-  <node pkg="base_station" type="base_station" name="bs" required="true">
+  <node pkg="base_station" type="base_station" name="bs" required="true" output="screen">
     <param name="cloud/pitch" value="$(arg nav_pitch)"/>
     <param name="cloud_f_z" value="$(arg nav_z)"/>
     <param name="cloud_f_x" value="-0.2"/>
@@ -81,6 +81,7 @@
     <remap from="/front_right_web/rgb/image_raw" to="/front_right/rgb/image_raw"/>
     <param name="controls_html_file" value="$(find base_station)/web/controls.html"/>
     <param name="about_html_file" value="$(find base_station)/web/about.html"/>
+    <param name="rqt_view" value="$(find base_station)/Perspectives/gas_info.perspective"/>
   </node>
   
   <include file="$(find siar_model)/launch/siar_model_viz.launch"/>
@@ -93,7 +94,7 @@
         args="compressedDepth in:=/front_web/depth_registered/image_raw raw out:=/front/depth_registered/image_raw"/>
    
    
-  <node pkg="depth2cloud" type="depth2cloud_node" name="front_depth2cloud_node" output="screen" >
+  <node pkg="depth2cloud" type="depth2cloud_node" name="front_depth2cloud_node" >
     <remap from="depth" to="/front/depth_registered/image_raw"/>              # Topic for the camera depth
     <remap from="info" to="/front_web/depth_registered/camera_info"/>   # Topic for the camera info
     <remap from="cloud" to="/front/points"/>                # Topic name for output point cloud
@@ -129,7 +130,7 @@
    <node name="uncompresser_front_right_rgb" pkg="image_transport" type="republish"
         args="compressed in:=/front_right_web/rgb/image_raw raw out:=/front_right/rgb/image_raw"/>
    
-  <node pkg="depth2cloud" type="depth2cloud_node" name="front_right_depth2cloud_node" output="screen" >
+  <node pkg="depth2cloud" type="depth2cloud_node" name="front_right_depth2cloud_node" >
     <remap from="depth" to="/front_right/depth_registered/image_raw"/>              # Topic for the camera depth
     <remap from="info" to="/front_right_web/depth_registered/camera_info"/>   # Topic for the camera info
     <remap from="cloud" to="/front_right/points"/>                # Topic name for output point cloud
@@ -147,7 +148,7 @@
    <node name="uncompresser_up_rgb" pkg="image_transport" type="republish"
         args="compressed in:=/up_web/rgb/image_raw raw out:=/up/rgb/image_raw"/>
    
-  <node pkg="depth2cloud" type="depth2cloud_node" name="up_depth2cloud_node" output="screen" >
+  <node pkg="depth2cloud" type="depth2cloud_node" name="up_depth2cloud_node" >
     <remap from="depth" to="/up/depth_registered/image_raw"/>              # Topic for the camera depth
     <remap from="info" to="/up_web/depth_registered/camera_info"/>   # Topic for the camera info
     <remap from="cloud" to="/up/points"/>                # Topic name for output point cloud
