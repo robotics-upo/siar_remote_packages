@@ -2,7 +2,7 @@
 <launch>
   
   <arg name="joystick" default="true"/>
-  <arg name="joy_dev" default="/dev/input/js0"/>
+  <arg name="joy_dev" default="/dev/input/js1"/>
   <arg name="mode_360" default="true"/>
   <arg name="ip" default="192.168.168.11"/>
   <arg name="detection" default="false"/>

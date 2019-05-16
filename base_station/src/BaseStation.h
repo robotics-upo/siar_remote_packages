@@ -74,6 +74,7 @@ public slots:
   void showAbout();
   void handleCommComboBox(const int &value);
   void showGasInfo();
+  void generateAlert();
   
 private slots:
   void updateValues();

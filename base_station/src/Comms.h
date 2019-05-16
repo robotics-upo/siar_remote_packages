@@ -55,6 +55,8 @@ public:
   
   void setPublishDepth(bool publish);
   void setCommsMode(u_int8_t mode);
+
+  bool generateAlert(const std::string &text, int pos, int type);
   
 signals:
   void siarStatusChanged(const siar_driver::SiarStatus new_status);
@@ -86,7 +88,7 @@ protected:
   ros::Subscriber status_sub, rssi_sub, text_sub;
   ros::Subscriber arm_torque_sub, arm_mode_sub;
   ros::Publisher emergency_pub, elec_x_pub, publish_depth_pub, comms_mode_pub;
-  ros::ServiceClient map_analysis_op_mode_client;
+  ros::ServiceClient map_analysis_op_mode_client, alert_client;
   functions::FormattedTime init_log_time;
   
   //! @brief Gets the state data of an UAV

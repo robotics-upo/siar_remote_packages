@@ -47,7 +47,7 @@ set(QT_RESOURCES icons/resource.qrc web/web_resource.qrc)
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES base_station
- CATKIN_DEPENDS rosbag roscpp sensor_msgs std_msgs compressed_depth_image_transport cv_bridge functions rviz
+ CATKIN_DEPENDS rosbag roscpp sensor_msgs std_msgs compressed_depth_image_transport cv_bridge functions rviz alert_db
  #DEPENDS boost opencv Qt 
 )
 
@@ -61,6 +61,7 @@ SET( siar_gui_UIS
        ./ui/siar_gui.ui 
        ./ui/controls.ui
        ./ui/about_siar_gui.ui
+       ./ui/alert_dialog.ui
   )
   
   set (siar_gui_SRCS

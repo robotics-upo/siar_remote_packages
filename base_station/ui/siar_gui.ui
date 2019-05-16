@@ -318,7 +318,7 @@
               </size>
              </property>
              <property name="text">
-              <string>Normal</string>
+              <string>&amp;Normal</string>
              </property>
              <property name="checked">
               <bool>true</bool>
@@ -329,8 +329,8 @@
          </widget>
         </item>
         <item row="4" column="1">
-         <widget class="QwtDial" name="Dial_speed" native="true">
-          <property name="lineWidth" stdset="0">
+         <widget class="QwtDial" name="Dial_speed">
+          <property name="lineWidth">
            <number>4</number>
           </property>
          </widget>
@@ -536,7 +536,7 @@
               <bool>false</bool>
              </property>
              <property name="text">
-              <string>Manual</string>
+              <string>&amp;Manual</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -672,14 +672,14 @@
      <x>0</x>
      <y>0</y>
      <width>1308</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>Fi&amp;le</string>
     </property>
-    <addaction name="actionLoad_Graph"/>
+    <addaction name="actionGenerateAlert"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -692,7 +692,7 @@
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
-     <string>View</string>
+     <string>&amp;View</string>
     </property>
     <addaction name="actionExploration"/>
     <addaction name="actionAlert"/>
@@ -707,27 +707,27 @@
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionAbout">
    <property name="text">
-    <string>About</string>
+    <string>&amp;About</string>
    </property>
   </action>
-  <action name="actionLoad_Graph">
+  <action name="actionGenerateAlert">
    <property name="text">
-    <string>Save Log</string>
+    <string>&amp;Generate Alert</string>
    </property>
   </action>
   <action name="actionExploration">
    <property name="text">
-    <string>Exploration</string>
+    <string>&amp;Exploration</string>
    </property>
   </action>
   <action name="actionAlert">
    <property name="text">
-    <string>Mission</string>
+    <string>&amp;Mission</string>
    </property>
   </action>
   <action name="actionServiceability">
    <property name="text">
-    <string>Serviceability</string>
+    <string>&amp;Serviceability</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+D, Ctrl+S</string>
@@ -735,17 +735,17 @@
   </action>
   <action name="actionInspection">
    <property name="text">
-    <string>Inspection</string>
+    <string>&amp;Inspection</string>
    </property>
   </action>
   <action name="actionGasInfo">
    <property name="text">
-    <string>Gas Information</string>
+    <string>&amp;Gas Information</string>
    </property>
   </action>
   <action name="actionControls">
    <property name="text">
-    <string>Controls</string>
+    <string>&amp;Controls</string>
    </property>
   </action>
  </widget>

@@ -42,6 +42,7 @@
 #endif
 
 #include "OGRE/OgreCamera.h"
+#include <base_station/ui_alert_dialog.h>
 
 #include <QtWebKitWidgets/QWebView>
 
@@ -188,6 +189,7 @@ QMainWindow(parent, flags), argc(argc), argv(argv), init_log_time(), node(NULL),
   
   
   // Make Qt connections
+  connect(actionGenerateAlert, SIGNAL(triggered()), this, SLOT(generateAlert()));
   connect(actionExploration, SIGNAL(triggered()), this, SLOT(setExploreView()));
   connect(actionAlert, SIGNAL(triggered()), this, SLOT(setMissionView()));
   connect(actionServiceability, SIGNAL(triggered()), this, SLOT(setServiceabilityView()));
@@ -818,7 +820,27 @@ void BaseStation::showGasInfo() {
 
 }
 
-
+void BaseStation::generateAlert() {
+  QDialog *d = new QDialog(this);
+  Ui::Dialog ui_;
+  ui_.setupUi(d);
+  d->setModal(true);  
+  if (d->exec() == QDialog::Accepted) {
+    // TODO: get the stuff and generate the request
+    std::string description = ui_.textEdit->toPlainText().toStdString();
+    QComboBox &cb = *ui_.alertTypeCombo;
+    int index = cb.currentIndex();
+    int position = ui_.spinBox->value(); // TODO: Add position according to clock hour
+    if (index > 0)
+      index++;
+    if (node->generateAlert(description, position, index)) {
+      QMessageBox::information(this, "Alert OK", "Alert generated successfully");
+    } else {
+      QMessageBox::critical(this, "Service error", "Could not create the alert");
+    }
+  }
+  delete d;
+}
 
 // QColor BaseStation::selectColor(unsigned int i)
 // {

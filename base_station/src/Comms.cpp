@@ -28,6 +28,7 @@
 #include <siar_driver/SiarLightCommand.h>
 #include <rssi_get/Nvip_status.h>
 #include <siar_inspection/Activate.h>
+#include <alert_db/GenerateAlert.h>
 
 using namespace functions;
 using namespace std;
@@ -49,6 +50,8 @@ Comms::Comms(int argc, char** argv):spinner(NULL),emergency(false),slow(false),a
   // Service clients
   ROS_INFO("Activating the operation mode client");
   map_analysis_op_mode_client = nh.serviceClient<siar_inspection::Activate>("/detect_pcl/set_operation_mode");
+  ROS_INFO("Activating the alert DB client");
+  alert_client = nh.serviceClient<alert_db::GenerateAlert>("/generate_alert");
   
   // Publisher
   emergency_pub = nh.advertise<std_msgs::Bool>("/emergency_stop",2);
@@ -176,7 +179,19 @@ void Comms::setPublishDepth(bool publish)
 }
 
 
-
+bool Comms::generateAlert(const std::string &text, int pos, int type) {
+  alert_db::GenerateAlert::Request req;
+  alert_db::GenerateAlert::Response res;
+  req.head.stamp = ros::Time::now();
+  req.description = text;
+  req.position = pos; 
+  req.attach_images = false;
+  req.type = type;
+  
+  ROS_INFO("Calling generate alert service");
+  alert_client.call(req, res);
+  return res.result == 1;
+}
 
 
 // void Comms::siarStatusChanged(const siar_driver::SiarStatus new_status)
